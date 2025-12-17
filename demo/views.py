@@ -15,6 +15,7 @@ def get_cos_curent(request):
 def meniu(request):
     
     masa_id = request.GET.get("masa")
+    masa = None
 
     if masa_id:
         try:
@@ -26,6 +27,8 @@ def meniu(request):
         masa_param = request.session.get("masa_id")
         if masa_param:
             masa = Masa.objects.get(id=masa_param)
+        else:
+            masa = None
     
     categorii = Categorie.objects.prefetch_related("produse__imagini").order_by("ordine")
     ctx = {

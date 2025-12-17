@@ -1,0 +1,257 @@
+/* ===== RESET & FONT ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+    background: #0f0f0f;
+    color: #eaeaea;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+    position: sticky;
+    top: 0;
+    height: 60px;
+    background: #0f0f0f;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.cart-btn {
+    font-size: 20px;
+    text-decoration: none;
+    color: #d4af37; /* gold */
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    padding: 16px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ===== MASĂ INFO ===== */
+.masa-info {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 12px;
+}
+
+/* ===== GOLD NAVBAR ===== */
+
+.gold-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #0d0d0d;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 14px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    overflow-x: auto;
+
+}
+
+.gold-navbar::-webkit-scrollbar {
+    display: none;
+}
+
+.gold-nav-btn {
+    white-space: nowrap;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #d4af37, #b8962e);
+    color: #000;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 6px 20px rgba(212,175,55,0.35);
+    transition: all 0.25s ease;
+}
+
+.gold-nav-btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 10px 30px rgba(212,175,55,0.55);
+}
+
+.gold-nav-btn.cart {
+    padding: 10px 16px;
+    font-size: 16px;
+}
+.gold-nav-btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 4px 15px rgba(212,175,55,0.25);
+}
+
+/* ===== CATEGORIE ===== */
+h2 {
+    margin: 28px 0 14px;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* ===== PRODUS ===== */
+.produs-list {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.produs-list img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* ===== INFO PRODUS ===== */
+.produs-info {
+    flex: 1;
+}
+
+.produs-info h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.produs-info .pret {
+    color: #d4af37;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.produs-info p {
+    font-size: 13px;
+    opacity: 0.75;
+    line-height: 1.4;
+}
+
+/* ===== BUTON ADAUGĂ ===== */
+.btn-mic {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 6px 16px;
+    background: transparent;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    border-radius: 999px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+.btn-mic:hover {
+    background: #d4af37;
+    color: #0f0f0f;
+}
+
+/* ===== COȘ ===== */
+.produs {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.produs-title {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+button.btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    background: #d4af37;
+    color: #0f0f0f;
+    border: none;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+button.btn:hover {
+    background: #b89a2f;
+}
+
+/* ===== LINKURI ===== */
+a {
+    color: #d4af37;
+    text-decoration: none;
+}
+
+.galerie {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px;
+    scroll-snap-type: x mandatory;
+}
+
+.galerie img {
+    min-width: 85%;
+    height: 360px;
+    object-fit: cover;
+    border-radius: 18px;
+    scroll-snap-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+/* scrollbar off */
+.galerie::-webkit-scrollbar {
+    display: none;
+}
+
+/* ===== BUTON INAPOI LA MENIU ===== */
+
+.back-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 30px;
+}
+
+.back-gold-btn {
+    background: linear-gradient(135deg, #d4af37, #b8962e);
+    color: #000;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+    transition: all 0.25s ease;
+}
+
+.back-gold-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(212, 175, 55, 0.55);
+}
+.back-gold-btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+}
+
+
