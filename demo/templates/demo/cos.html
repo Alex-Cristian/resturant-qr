@@ -1,0 +1,50 @@
+{% extends "demo/baza.html" %}
+{% block title %}Comanda ta{% endblock %}
+
+{% block content %}
+
+<h2>🛒 Comanda ta</h2>
+
+{% if items %}
+    {% for item in items %}
+    <div class="produs">
+        <div class="produs-content">
+            <div class="produs-title">
+                <span>{{ item.produs.nume }}</span>
+                <span class="pret">{{ item.subtotal }} lei</span>
+            </div>
+
+            <p>Cantitate: {{ item.cantitate }}</p>
+
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <a href="{% url 'scade_din_cos' item.produs.id %}" class="btn" style="color:red;">
+                    ➖
+                </a>
+                <a href="{% url 'adauga_din_cos' item.produs.id %}" class="btn" style="color:green;">
+                    ➕
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <h3 style="margin-top:20px;">Total: {{ total }} lei</h3>
+
+    <form action="{% url 'trimite_comanda' %}" method="post">
+        {% csrf_token %}
+        <button class="btn" style="margin-top:12px; width:100%;">
+            ✅ Trimite comanda
+        </button>
+    </form>
+
+{% else %}
+    <p>Comanda este goală.</p>
+{% endif %}
+
+<div class="back-container">
+    <a href="/" class="back-gold-btn">
+        ← Înapoi la meniu
+    </a>
+</div>
+
+{% endblock %}

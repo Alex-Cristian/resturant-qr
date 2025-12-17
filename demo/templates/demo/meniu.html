@@ -1,0 +1,55 @@
+{% extends "demo/baza.html" %}
+{% block title %}Meniu{% endblock %}
+
+{% block content %}
+
+{% if masa %}
+<p class="masa-info">🍽️ Masa {{ masa.numar }}</p>
+{% endif %}
+
+<nav class="gold-navbar">
+    {% for categorie in categorii %}
+        <a href="#cat-{{ categorie.id }}" class="gold-nav-btn">
+            {{ categorie.iconita }} {{ categorie.nume }}
+        </a>
+    {% endfor %}
+
+</nav>
+
+
+
+{% for categorie in categorii %}
+<div id="cat-{{ categorie.id }}">
+    <h2 style="margin-top:20px;">
+        {{ categorie.iconita }} {{ categorie.nume }}
+    </h2>
+
+    {% for produs in categorie.produse.all %}
+    <div class="produs-list">
+
+        {% if produs.imagini.first %}
+            <img src="{{ produs.imagini.first.imagine.url }}" alt="{{ produs.nume }}">
+        {% endif %}
+
+        <div class="produs-info">
+            <h3>
+                <a href="{% url 'detalii_produs' produs.id %}">
+                    {{ produs.nume }}
+                </a>
+            </h3>
+            <h3>
+                <class="pret">Pret: {{ produs.pret }} lei
+            </h3>
+            <p>Ingrediente:</p>
+            <p>{{ produs.ingrediente }}</p>
+
+            <a href="{% url 'adauga_in_cos' produs.id %}" class="btn-mic">
+                ➕ Adaugă
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+
+{% endblock %}

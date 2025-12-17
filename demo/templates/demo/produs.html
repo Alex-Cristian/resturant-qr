@@ -1,0 +1,37 @@
+{% extends "demo/baza.html" %}
+{% block title %}{{ produs.nume }}{% endblock %}
+
+{% block content %}
+
+<!-- GALERIE IMAGINI -->
+<div class="galerie">
+    {% for img in produs.imagini.all %}
+        <img src="{{ img.imagine.url }}" alt="{{ produs.nume }}">
+    {% endfor %}
+</div>
+
+<h2 style="margin-top:16px;">
+    {{ produs.nume }}
+</h2>
+
+<h2 class="pret" style="margin-top:4px;">
+    Pret: {{ produs.pret }} lei
+</h2>
+
+<p style="margin-top:10px; opacity:0.8;">
+    <strong>Ingrediente:</strong><br>
+    {{ produs.ingrediente }}
+</p>
+
+<p style="margin-top:10px; opacity:0.8;">
+    <strong>Valori nutriționale:</strong><br>
+    {{ produs.valori_nutritionale }}
+</p>
+
+<div class="back-container">
+    <a href="/" class="back-gold-btn">
+        ← Înapoi la meniu
+    </a>
+</div>
+
+{% endblock %}
