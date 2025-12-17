@@ -13,9 +13,8 @@ def get_cos_curent(request):
 
 
 def meniu(request):
-    
-    masa_id = request.GET.get("masa")
     masa = None
+    masa_id = request.GET.get("masa")
 
     if masa_id:
         try:
@@ -23,12 +22,28 @@ def meniu(request):
             request.session["masa_id"] = masa.id
         except Masa.DoesNotExist:
             masa = None
+            request.session.pop("masa_id", None)
+
     else:
         masa_param = request.session.get("masa_id")
         if masa_param:
-            masa = Masa.objects.get(id=masa_param)
-        else:
-            masa = None
+            try:
+                masa = Masa.objects.get(id=masa_param)
+            except Masa.DoesNotExist:
+                masa = None
+                request.session.pop("masa_id", None)
+
+    categorii = Categorie.objects.prefetch_related(
+        "produse__imagini"
+    ).order_by("ordine")
+
+    ctx = {
+        "categorii": categorii,
+        "masa": masa,
+    }
+
+    return render(request, "demo/meniu.html", ctx)
+
     
     categorii = Categorie.objects.prefetch_related("produse__imagini").order_by("ordine")
     ctx = {
