@@ -12,30 +12,45 @@ def get_cos_curent(request):
     return masa_id, cos
 
 
-def meniu(request):
-    
-    masa_id = request.GET.get("masa")
+def meniu(request, masa_id=None):
     masa = None
 
+    # 1️⃣ Prioritate: masa din URL (/meniu/masa/6/)
     if masa_id:
         try:
-            masa = Masa.objects.get(numar=masa_id)
+            masa = Masa.objects.get(id=masa_id)
             request.session["masa_id"] = masa.id
         except Masa.DoesNotExist:
             masa = None
+
+    # 2️⃣ Fallback: ?masa=6
+    elif request.GET.get("masa"):
+        try:
+            masa = Masa.objects.get(numar=request.GET.get("masa"))
+            request.session["masa_id"] = masa.id
+        except Masa.DoesNotExist:
+            masa = None
+
+    # 3️⃣ Fallback: session
     else:
         masa_param = request.session.get("masa_id")
         if masa_param:
-            masa = Masa.objects.get(id=masa_param)
-        else:
-            masa = None
-    
-    categorii = Categorie.objects.prefetch_related("produse__imagini").order_by("ordine")
+            try:
+                masa = Masa.objects.get(id=masa_param)
+            except Masa.DoesNotExist:
+                masa = None
+
+    categorii = Categorie.objects.prefetch_related(
+        "produse__imagini"
+    ).order_by("ordine")
+
     ctx = {
         "categorii": categorii,
         "masa": masa
     }
+
     return render(request, "demo/meniu.html", ctx)
+
 
 def adauga_in_cos(request, produs_id):
     masa_id = request.session.get("masa_id")
