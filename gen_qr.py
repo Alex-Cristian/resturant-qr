@@ -1,6 +1,6 @@
 import qrcode
 
-base_url = "http://resturant-qr.onrender.com/"
+base_url = "https://resturant-qr.onrender.com/"
 
 for masa in range(1,11):
     url = f"{base_url}?masa={masa}"
