@@ -28,7 +28,10 @@
     <div class="produs-list">
 
         {% if produs.imagini.first %}
-            <img src="{{ produs.imagini.first.imagine.url }}" alt="{{ produs.nume }}">
+            {% with img=produs.imagini.first.imagine.name %}
+                <img src="{% static 'demo/produse/'|add:img|cut:'produse/' %}"
+                    alt="{{ produs.nume }}">
+            {% endwith %}
         {% endif %}
 
         <div class="produs-info">
