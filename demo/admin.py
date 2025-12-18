@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Masa, Categorie, Produs, ImagineProdus, Comanda, ProdusComanda
+from .models import Masa, Categorie, Produs, ImagineProdus, Comanda, ProdusComanda, Cos
 
 class ImagineProdusInline(admin.TabularInline):
     model = ImagineProdus
@@ -36,5 +36,10 @@ class ComandaAdmin(admin.ModelAdmin):
 @admin.register(ProdusComanda)
 class ProdusComandaAdmin(admin.ModelAdmin):
     list_display = ("comanda", "produs", "cantitate", "pret_unitar")
+    
+@admin.register(Cos)
+class CosAdmin(admin.ModelAdmin):
+    list_display = ("masa", "produs", "cantitate")
+
 
 # Register your models here.

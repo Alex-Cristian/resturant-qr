@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Categorie, Comanda, Masa, Produs, ProdusComanda
+from .models import Categorie, Comanda, Masa, Produs, ProdusComanda, Cos
 
 def get_cos_curent(request):
     masa_id = request.session.get("masa_id")
@@ -44,63 +44,34 @@ def meniu(request):
 
     return render(request, "demo/meniu.html", ctx)
 
-    
-    categorii = Categorie.objects.prefetch_related("produse__imagini").order_by("ordine")
-    ctx = {
-        "categorii": categorii,
-        "masa": masa
-    }
-    return render(request, "demo/meniu.html", ctx)
-
 def adauga_in_cos(request, produs_id):
     masa_id = request.session.get("masa_id")
-    if not masa_id:
-        return redirect("meniu")
+    masa = Masa.objects.get(id=masa_id)
+    produs = Produs.objects.get(id=produs_id)
 
-    cosuri = request.session.get("cosuri", {})
-    cos = cosuri.get(str(masa_id), {})
-    
-    produs_id = str(produs_id)
-    cos[produs_id] = cos.get(produs_id, 0) + 1
-    
-    cosuri[str(masa_id)] = cos
-    request.session["cosuri"] = cosuri
+    item, created = Cos.objects.get_or_create(
+        masa=masa,
+        produs=produs,
+    )
 
-    return redirect("meniu")
+    if not created:
+        item.cantitate += 1
+        item.save()
+
+    return redirect("cos")
 
 def cos(request):
     masa = None
     masa_id = request.session.get("masa_id")
 
     if masa_id:
-        try:
-            masa = Masa.objects.get(id=masa_id)
-        except Masa.DoesNotExist:
-            masa = None
+        masa = Masa.objects.get(id=masa_id)
+        items = Cos.objects.filter(masa=masa)
+    else:
+        items = []
 
-    cosuri = request.session.get("cosuri", {})
-    cos = cosuri.get(str(masa_id), {})
+    return render(request, "demo/cos.html", {"masa": masa, "items": items})
 
-    produse = Produs.objects.filter(id__in=cos.keys())
-
-    total = 0
-    items = []
-
-    for produs in produse:
-        cantitate = cos[str(produs.id)]
-        subtotal = cantitate * produs.pret
-        total += subtotal
-
-        items.append({
-            "produs": produs,
-            "cantitate": cantitate,
-            "subtotal": subtotal
-        })
-
-    return render(request, "demo/cos.html", {
-        "items": items,
-        "total": total
-    })
     
 def adauga_din_cos(request, produs_id):
     masa_id = request.session.get("masa_id")

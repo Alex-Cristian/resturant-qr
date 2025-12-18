@@ -74,3 +74,15 @@ class ProdusComanda(models.Model):
 
     def __str__(self):
         return f"{self.produs.nume} x{self.cantitate}"
+    
+class Cos(models.Model):
+    masa = models.ForeignKey(Masa, on_delete=models.CASCADE)
+    produs = models.ForeignKey(Produs, on_delete=models.CASCADE)
+    cantitate = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        unique_together = ("masa", "produs")
+
+
+    def __str__(self):
+        return f"Cos pentru Masa {self.masa.numar}"
