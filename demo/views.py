@@ -46,19 +46,24 @@ def meniu(request):
 
 def adauga_in_cos(request, produs_id):
     masa_id = request.session.get("masa_id")
-    masa = Masa.objects.get(id=masa_id)
+
+    if not masa_id:
+        return redirect("meniu")
+
+    try:
+        masa = Masa.objects.get(id=masa_id)
+    except Masa.DoesNotExist:
+        return redirect("meniu")
+
     produs = Produs.objects.get(id=produs_id)
 
-    item, created = Cos.objects.get_or_create(
-        masa=masa,
-        produs=produs,
-    )
-
+    item, created = Cos.objects.get_or_create(masa=masa, produs=produs)
     if not created:
         item.cantitate += 1
         item.save()
 
     return redirect("cos")
+
 
 def cos(request):
     masa = None
@@ -77,10 +82,15 @@ def cos(request):
     
 def adauga_din_cos(request, produs_id):
     masa_id = request.session.get("masa_id")
+
     if not masa_id:
         return redirect("meniu")
 
-    masa = Masa.objects.get(id=masa_id)
+    try:
+        masa = Masa.objects.get(id=masa_id)
+    except Masa.DoesNotExist:
+        return redirect("meniu")
+
     produs = Produs.objects.get(id=produs_id)
 
     item = Cos.objects.get(masa=masa, produs=produs)
@@ -92,10 +102,15 @@ def adauga_din_cos(request, produs_id):
 
 def scade_din_cos(request, produs_id):
     masa_id = request.session.get("masa_id")
+
     if not masa_id:
         return redirect("meniu")
 
-    masa = Masa.objects.get(id=masa_id)
+    try:
+        masa = Masa.objects.get(id=masa_id)
+    except Masa.DoesNotExist:
+        return redirect("meniu")
+
     produs = Produs.objects.get(id=produs_id)
 
     item = Cos.objects.get(masa=masa, produs=produs)
