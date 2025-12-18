@@ -64,6 +64,8 @@ def cos(request):
     masa = None
     masa_id = request.session.get("masa_id")
 
+    if not masa_id:
+        return redirect("meniu")
     if masa_id:
         masa = Masa.objects.get(id=masa_id)
         items = Cos.objects.filter(masa=masa)
@@ -78,63 +80,61 @@ def adauga_din_cos(request, produs_id):
     if not masa_id:
         return redirect("meniu")
 
-    cosuri = request.session.get("cosuri", {})
-    cos = cosuri.get(str(masa_id), {})
+    masa = Masa.objects.get(id=masa_id)
+    produs = Produs.objects.get(id=produs_id)
 
-    produs_id = str(produs_id)
+    item = Cos.objects.get(masa=masa, produs=produs)
+    item.cantitate += 1
+    item.save()
 
-    if produs_id in cos:
-        cos[produs_id] += 1
-    request.session["cosuri"]=cosuri
     return redirect("cos")
+
 
 def scade_din_cos(request, produs_id):
     masa_id = request.session.get("masa_id")
     if not masa_id:
         return redirect("meniu")
 
-    cosuri = request.session.get("cosuri", {})
-    cos = cosuri.get(str(masa_id), {})
+    masa = Masa.objects.get(id=masa_id)
+    produs = Produs.objects.get(id=produs_id)
 
-    produs_id = str(produs_id)
+    item = Cos.objects.get(masa=masa, produs=produs)
+    item.cantitate -= 1
 
-    if produs_id in cos:
-        cos[produs_id] -= 1
-        if cos[produs_id] <= 0:
-            del cos[produs_id]
-            
-    request.session["cosuri"]=cosuri
+    if item.cantitate <= 0:
+        item.delete()
+    else:
+        item.save()
+
     return redirect("cos")
+
 
 def trimite_comanda(request):
     masa_id = request.session.get("masa_id")
     if not masa_id:
         return redirect("meniu")
-    
-    cosuri = request.session.get("cosuri",{})
-    cos = cosuri.get(str(masa_id), {})
-    
-    if not cos:
-        return redirect("cos")
-    
+
     masa = Masa.objects.get(id=masa_id)
-    
+    items = Cos.objects.filter(masa=masa)
+
+    if not items.exists():
+        return redirect("cos")
+
     comanda = Comanda.objects.create(masa=masa)
-    
-    produse = Produs.objects.filter(id__in=cos.keys())
-    
-    for produs in produse:
+
+    for item in items:
         ProdusComanda.objects.create(
             comanda=comanda,
-            produs=produs,
-            cantitate=cos[str(produs.id)],
-            pret_unitar=produs.pret,
+            produs=item.produs,
+            cantitate=item.cantitate,
+            pret_unitar=item.produs.pret,
         )
-        
-    del cosuri[str(masa_id)]
-    request.session["cosuri"]=cosuri
-    
-    return redirect ("meniu")
+
+    # șterge coșul după trimitere
+    items.delete()
+
+    return redirect("meniu")
+
 
 def detalii_produs(request, produs_id):
     produs = get_object_or_404(Produs, id=produs_id)
