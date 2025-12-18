@@ -76,6 +76,8 @@ def cos(request):
         items = Cos.objects.filter(masa=masa)
     else:
         items = []
+        
+    total = sum(item.produs.pret * item.cantitate for item in items)
 
     return render(request, "demo/cos.html", {"masa": masa, "items": items})
 
@@ -97,7 +99,7 @@ def adauga_din_cos(request, produs_id):
     item.cantitate += 1
     item.save()
 
-    return redirect("cos")
+    return redirect("meniu")
 
 
 def scade_din_cos(request, produs_id):

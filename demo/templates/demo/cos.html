@@ -11,7 +11,7 @@
         <div class="produs-content">
             <div class="produs-title">
                 <span>{{ item.produs.nume }}</span>
-                <span class="pret">{{ item.subtotal }} lei</span>
+                <span class="pret">{{ item.produs.pret|floatformat:2 }} x {{ item.cantitate }} = {{ item.produs.pret|mul:item.cantitate }} lei</span>
             </div>
 
             <p>Cantitate: {{ item.cantitate }}</p>
