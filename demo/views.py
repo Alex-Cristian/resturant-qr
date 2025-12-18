@@ -69,9 +69,14 @@ def adauga_in_cos(request, produs_id):
     return redirect("meniu")
 
 def cos(request):
+    masa = None
     masa_id = request.session.get("masa_id")
-    if not masa_id:
-        return redirect("meniu")
+
+    if masa_id:
+        try:
+            masa = Masa.objects.get(id=masa_id)
+        except Masa.DoesNotExist:
+            masa = None
 
     cosuri = request.session.get("cosuri", {})
     cos = cosuri.get(str(masa_id), {})
